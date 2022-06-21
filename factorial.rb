@@ -1,11 +1,24 @@
-#factorial de un  numero 
-puts "numero : "
-v2= gets.chomp.to_i
-factorial=1
-secuencia = ""
-v2.downto(1) do |n| 
+#factorial number
+#to accumulate the sequence of the factorial and the result
+
+factorial = 1
+sequence = ""
+
+#asking for the number, to calculate the factorial
+
+puts "type a number : "
+number = gets.chomp.to_i
+
+#by decreasing the number to 1
+number.downto(1) do |n| 
+  # accumulating the result of the factorial * n 
   factorial *= n 
-  secuencia  += "#{n}"
-  secuencia  += "x" if n >1
+  # accumulating the value of n
+  sequence  += "#{n}"
+  #checking that n is greater than 1 so that it does not put an x after the 1
+  sequence  += "x" if n >1
+
 end
-puts " #{secuencia} = #{factorial}"
+
+#printing of the sequence and factorial
+puts " #{sequence} = #{factorial}"
