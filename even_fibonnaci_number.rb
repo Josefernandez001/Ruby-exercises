@@ -1,12 +1,12 @@
 #these variables are for starting the sequence and incrementing it
-a=0
-b=1
-even_sum=0
+accumulator = 0
+increaser = 1
+even_sum = 0
 
-while a < 400000000
-    a,b=b,a+b
-  if a % 2 == 0 
-    even_sum += a
+while accumulator < 400000000
+    accumulator , increaser = increaser, accumulator + increaser
+  if increaser % 2 == 0 
+    even_sum += increaser
   end
 end
 puts ""
