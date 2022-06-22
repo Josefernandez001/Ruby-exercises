@@ -10,4 +10,4 @@ while a < 400000000
   end
 end
 puts ""
-puts "la suma es : #{even_sum}"
+puts "the sum is  : #{even_sum}"
