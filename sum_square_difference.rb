@@ -8,7 +8,7 @@ class Squares
             sum_natural_numbers += number
         end
         difference =  (sum_natural_numbers ** 2) - sum_squares 
-        puts "the difference is : #{difference}" 
+        "the difference is : #{difference}" 
     end
 end
-Squares.difference_sum_of_squares()    
+puts Squares.difference_sum_of_squares()    

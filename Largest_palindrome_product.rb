@@ -12,9 +12,8 @@ class Palindrome
                 end
             end
         end
-        puts "the palindrome product is  #{@greater_palindrome} = #{@x}x#{@y1}"
+        "the palindrome product is  #{@greater_palindrome} = #{@x}x#{@y1}"
 
     end
 end
 
-Palindrome.greater_palindrome_product
