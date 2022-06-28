@@ -1,4 +1,4 @@
-require_relative "../Largest_prime_factor"
+require_relative "../largest_prime_factor"
 
 RSpec.describe Factors do 
     subject { described_class.highest_prime_factor(number) }
@@ -9,8 +9,8 @@ RSpec.describe Factors do
                 it { is_expected.to eq("the largest prime factor is: 3")}
             end
             describe "when the number is 90" do 
-                let(:number) {9}
-                it { is_expected.to eq("the largest prime factor is: 3")}
+                let(:number) {90}
+                it { is_expected.to eq("the largest prime factor is: 5")}
             end
             describe "when the number is 600851475143" do 
                 let(:number) {600851475143}

@@ -1,7 +1,7 @@
 require_relative "../multiples_3_and_5"
 RSpec.describe Multiples do
-    subject {described_class.sum_multiples_3_and_5(limit)}
-    describe "sum_multiples_3_and_5" do 
+    subject {described_class.sum_multiples3and5(limit)}
+    describe "sum_multiples3and5" do 
         context "when assessing positive cases" do 
             describe "when the limit is 999" do 
                 let(:limit) {999}
