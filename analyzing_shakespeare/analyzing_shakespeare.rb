@@ -18,5 +18,5 @@ class AnalyzingShakespeare
   end
 end
 
-# characters = AnalyzingShakespeare.new
-# puts characters.analyzing
+characters = AnalyzingShakespeare.new
+puts characters.analyzing
