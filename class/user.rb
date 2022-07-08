@@ -102,22 +102,22 @@ class User
     return 'last name is required' if object['last_name'].nil?.eql?(true) || object['last_name'].eql?('')
     return 'email is required' if object['email'].nil?.eql?(true) || object['email'].eql?('')
 
-    usuario = {}
+    user_found = {}
     @@users.each do |user|
-      usuario = user if user['id'] == id
+      user_found = user if user['id'] == id
     end
 
-    return 'id not found' if usuario.nil?.eql?(true) || usuario.eql?({})
+    return 'id not found' if user_found.nil?.eql?(true) || user_found.eql?({})
 
-    @@users.delete(usuario)
+    @@users.delete(user_found)
 
     @@users.each do |user|
       if user['id'].eql?(object['id'])
-        @@users << usuario
+        @@users << user_found
         return 'that id is registered'
       end
       if user['email'].eql?(object['email'])
-        @@users << usuario
+        @@users << user_found
         return 'that email is registered'
       end
     end
@@ -126,15 +126,15 @@ class User
   end
 
   def delete(id)
-    usuario = {}
+    user_found = {}
     @@users.each do |user|
-      usuario = user if user['id'] == id
+      user_found = user if user['id'] == id
     end
 
-    return 'id not found' if usuario.nil?.eql?(true) || usuario.eql?({})
+    return 'id not found' if user_found.nil?.eql?(true) || user_found.eql?({})
 
-    @@users.delete(usuario)
-    usuario
+    @@users.delete(user_found)
+    user_found
   end
 end
 
