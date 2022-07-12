@@ -173,7 +173,7 @@ RSpec.describe Product do
   end
 # ------------
   describe '#update' do
-  subject{ described_class.new('').update(id,object) }
+    subject{ described_class.new('').update(id,object) }
     context 'when assessing positive cases' do
       describe 'upgrading a product' do
         let(:id){0}
