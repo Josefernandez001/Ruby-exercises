@@ -53,42 +53,47 @@ class User
     'id not found'
   end
 
-  def where(type,data)
+  def where(type, data)
     responses = []
-    case type
-      when 'name'
-        @@users.each  do |user|
-          next if user['name'].nil?
+    responses = case type
+                when 'name'
+                  @@users.each do |user|
+                    next if user['name'].nil?
 
-          responses << user if user['name'] == data
-        end
-      when 'last_name'
-        @@users.each  do |user|
-          next if user['last_name'].nil?
+                    responses << user if user['name'] == data
+                  end
+                  responses
+                when 'last_name'
+                  @@users.each do |user|
+                    next if user['last_name'].nil?
 
-          responses << user if user['last_name'] == data
-        end
-      when 'age>='
-        @@users.each  do |user|
-          next if user['age'].nil?
+                    responses << user if user['last_name'] == data
+                  end
+                  responses
+                when 'age>='
+                  @@users.each do |user|
+                    next if user['age'].nil?
 
-          responses << user if user['age'] >= data
-        end
-      when 'age<='
-        @@users.each  do |user|
-          next if user['age'].nil?
+                    responses << user if user['age'] >= data
+                  end
+                  responses
+                when 'age<='
+                  @@users.each do |user|
+                    next if user['age'].nil?
 
-          responses << user if user['age'] <= data
-        end
-      when 'address'
-        @@users.each do |user|
-          next if user['address'].nil?
+                    responses << user if user['age'] <= data
+                  end
+                  responses
+                when 'address'
+                  @@users.each do |user|
+                    next if user['address'].nil?
 
-          responses << user if user['address'] == data
-        end
-      else
-        'op not found'
-      end
+                    responses << user if user['address'] == data
+                  end
+                  responses
+                else
+                  'op not found'
+                end
     if responses.nil?.eql?(false) && responses.eql?([]) == false
       responses
     else
@@ -96,7 +101,7 @@ class User
     end
   end
 
-  def update(id,object)
+  def update(id, object)
     return 'id is required' if object['id'].nil?.eql?(true) || object['id'].eql?('')
     return 'first name is required' if object['name'].nil?.eql?(true) || object['name'].eql?('')
     return 'last name is required' if object['last_name'].nil?.eql?(true) || object['last_name'].eql?('')
@@ -138,18 +143,22 @@ class User
   end
 end
 
-# user2 = User.new({ 'id' => 2, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'joase@', 'address' => 'aaaaa', 'age' => 18})
+# user2 = User.new({ 'id' => 2, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'joase@',
+# 'address' => 'aaaaa', 'age' => 18})
 # user2.create
-# user1 = User.new({ 'id' => 1, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'jose@', 'address' => 'aaaaa', 'age' => 16 })
+# user1 = User.new({ 'id' => 1, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'jose@',
+# 'address' => 'aaaaa', 'age' => 16 })
 # user1.create
-# # user3 = User.new({ 'id' => 3, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'jose', 'address' => 'aaaaa', 'age' => 15 })
-# # user3.create
+# # user3 = User.new({ 'id' => 3, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'jose',
+# 'address' => 'aaaaa', 'age' => 15 })
+# user3.create
 
-# # puts user3.where('name','jose').to_s
-# # puts user3.where('last_name','fernandez').to_s
-# # puts user3.where('age>=',18).to_s
-# # puts user3.where('age<=',23).to_s
-# # puts user3.where('address','aaaaa').to_s
+# puts user3.where('name', 'jose').to_s
+# puts user3.where('last_name', 'fernandez').to_s
+# puts user3.where('age>=', 18).to_s
+# puts user3.where('age<=', 23).to_s
+# puts user3.where('address', 'aaaaa').to_s
 
-# puts user2.update(2,{'id' => 2, 'name' => 'ismael', 'last_name' => 'llanos', 'email' => 'jose@', 'address' => 'll23', 'age' => 18})
+# puts user2.update(2,{'id' => 2, 'name' => 'ismael', 'last_name' => 'llanos', 'email' => 'jose@',
+# 'address' => 'll23', 'age' => 18})
 # puts user2.all
