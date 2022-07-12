@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
+# class product
 class Product
   @@products = []
   @@count = 0
   def initialize(product)
-   @product = product
+    @product = product
   end
 
   def count
@@ -11,14 +14,14 @@ class Product
 
   def create
     flag = nil
-    return 'id is required' if@product['id'].nil? ||@product['id'].eql?('')
-    return 'name is required' if@product['name'].nil? ||@product['name'].eql?('')
-    return 'value is required' if@product['value'].nil? ||@product['value'].eql?('')
-    return 'brand is required' if@product['brand'].nil? ||@product['brand'].eql?('')
+    return 'id is required' if @product['id'].nil? || @product['id'].eql?('')
+    return 'name is required' if @product['name'].nil? || @product['name'].eql?('')
+    return 'value is required' if @product['value'].nil? || @product['value'].eql?('')
+    return 'brand is required' if @product['brand'].nil? || @product['brand'].eql?('')
 
     if @@products.length >= 1
       @@products.each do |product_obj|
-        flag = product_obj['id'].eql?@product['id']
+        flag = product_obj['id'].eql? @product['id']
         return 'the id cannot be repeated' if flag.eql? true
 
         break if flag.eql?(true)
@@ -30,7 +33,7 @@ class Product
       end
     else
       @@count += 1
-      @@products <<@product
+      @@products << @product
       @product
     end
   end
@@ -46,48 +49,54 @@ class Product
     'id not found'
   end
 
-  def where(type,data)
+  def where(type, data)
     responses = []
-    case type
-      when 'name'
-        @@products.each  do |product|
-          next if product['name'].nil?
+    responses = case type
+                when 'name'
+                  @@products.each do |product|
+                    next if product['name'].nil?
 
-          responses << product if product['name'] == data
-        end
-      when 'brand'
-        @@products.each  do |product|
-          next if product['brand'].nil?
+                    responses << product if product['name'] == data
+                  end
+                  response
+                when 'brand'
+                  @@products.each do |product|
+                    next if product['brand'].nil?
 
-          responses << product if product['brand'] == data
-        end
-      when 'description'
-        @@products.each do |product|
-          next if product['description'].nil?
+                    responses << product if product['brand'] == data
+                  end
+                  response
+                when 'description'
+                  @@products.each do |product|
+                    next if product['description'].nil?
 
-          responses << product if product['description'] == data
-        end
-      when 'value>='
-        @@products.each  do |product|
-          next if product['value'].nil?
+                    responses << product if product['description'] == data
+                  end
+                  response
+                when 'value>='
+                  @@products.each do |product|
+                    next if product['value'].nil?
 
-          responses << product if product['value'] >= data
-        end
-      when 'value<='
-        @@products.each  do |product|
-          next if product['value'].nil?
+                    responses << product if product['value'] >= data
+                  end
+                  response
+                when 'value<='
+                  @@products.each do |product|
+                    next if product['value'].nil?
 
-          responses << product if product['value'] <= data
-        end
-      when 'quantity'
-        @@products.each do |product|
-          next if product['quantity'].nil?
+                    responses << product if product['value'] <= data
+                  end
+                  response
+                when 'quantity'
+                  @@products.each do |product|
+                    next if product['quantity'].nil?
 
-          responses << product if product['quantity'] == data
-        end
-      else
-        return 'op not found'
-      end
+                    responses << product if product['quantity'] == data
+                  end
+                  response
+                else
+                  return 'op not found'
+                end
     if responses.nil?.eql?(false) && responses.eql?([]) == false
       responses
     else
@@ -95,7 +104,7 @@ class Product
     end
   end
 
-  def update(id,object)
+  def update(id, object)
     return 'id is required' if object['id'].nil?.eql?(true) || object['id'].eql?('')
     return 'name is required' if object['name'].nil?.eql?(true) || object['name'].eql?('')
     return 'value is required' if object['value'].nil?.eql?(true) || object['value'].eql?('')
@@ -133,10 +142,13 @@ class Product
   end
 end
 # {'id' => 0,'name' => '', 'value' => 0, 'brand' => '', 'description' => '', 'quantity' => 0}
-# product = Product.new({'id' => 0,'name' => 'celphone', 'value' => 23239, 'brand' => 'motorola', 'description' => 'iphone14', 'quantity' => 16})
+# product = Product.new({'id' => 0,'name' => 'celphone', 'value' => 23239, 'brand' => 'motorola',
+# 'description' => 'iphone14', 'quantity' => 16})
 # product.create
-# product1 = Product.new({'id' => 2,'name' => 'celphone', 'value' => 23239, 'brand' => 'apple', 'description' => 'iphone14', 'quantity' => 16})
+# product1 = Product.new({'id' => 2,'name' => 'celphone', 'value' => 23239, 'brand' => 'apple',
+# 'description' => 'iphone14', 'quantity' => 16})
 # product1.create
-# product.update(0,{'id' => 1,'name' => 'iphone', 'value' => 6_000_000, 'brand' => 'apple', 'description' => 'iphone14', 'quantity' => 100})
+# product.update(0,{'id' => 1,'name' => 'iphone', 'value' => 6_000_000, 'brand' => 'apple',
+# 'description' => 'iphone14', 'quantity' => 100})
 
 # puts product.count
