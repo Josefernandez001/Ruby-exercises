@@ -1,4 +1,4 @@
-require_relative '../user'
+require_relative '../user_prueba'
 
 RSpec.describe User do
   subject { described_class.new(user) }
