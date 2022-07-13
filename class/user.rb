@@ -53,16 +53,18 @@ class User
     'id not found'
   end
 
-  def where(type,data)
+  def where(type, data)
     responses = []
 
     @@users.each do |product|
       if type.include?('age')
         next if product['age'].nil?
+
         responses << product if product['age'] <= data && type.include?('<=')
         responses << product if product['age'] >= data && type.include?('>=')
       else
         next if product[type].nil?
+
         responses << product if product[type] == data
       end
     end
@@ -74,7 +76,7 @@ class User
 
   end
 
-  def update(id,object)
+  def update(id, object)
     return 'id is required' if object['id'].nil?.eql?(true) || object['id'].eql?('')
     return 'first name is required' if object['name'].nil?.eql?(true) || object['name'].eql?('')
     return 'last name is required' if object['last_name'].nil?.eql?(true) || object['last_name'].eql?('')
