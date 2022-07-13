@@ -51,52 +51,17 @@ class Product
 
   def where(type, data)
     responses = []
-    responses = case type
-                when 'name'
-                  @@products.each do |product|
-                    next if product['name'].nil?
 
-                    responses << product if product['name'] == data
-                  end
-                  response
-                when 'brand'
-                  @@products.each do |product|
-                    next if product['brand'].nil?
-
-                    responses << product if product['brand'] == data
-                  end
-                  response
-                when 'description'
-                  @@products.each do |product|
-                    next if product['description'].nil?
-
-                    responses << product if product['description'] == data
-                  end
-                  response
-                when 'value>='
-                  @@products.each do |product|
-                    next if product['value'].nil?
-
-                    responses << product if product['value'] >= data
-                  end
-                  response
-                when 'value<='
-                  @@products.each do |product|
-                    next if product['value'].nil?
-
-                    responses << product if product['value'] <= data
-                  end
-                  response
-                when 'quantity'
-                  @@products.each do |product|
-                    next if product['quantity'].nil?
-
-                    responses << product if product['quantity'] == data
-                  end
-                  response
-                else
-                  return 'op not found'
-                end
+    @@products.each do |product|
+      if type.include?('value')
+        next if product['value'].nil?
+        responses << product if product['value'] <= data && type.include?('<=')
+        responses << product if product['value'] >= data && type.include?('>=')
+      else
+        next if product[type].nil?
+        responses << product if product[type] == data
+      end
+    end
     if responses.nil?.eql?(false) && responses.eql?([]) == false
       responses
     else
