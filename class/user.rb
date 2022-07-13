@@ -55,45 +55,23 @@ class User
 
   def where(type,data)
     responses = []
-    case type
-      when 'name'
-        @@users.each  do |user|
-          next if user['name'].nil?
 
-          responses << user if user['name'] == data
-        end
-      when 'last_name'
-        @@users.each  do |user|
-          next if user['last_name'].nil?
-
-          responses << user if user['last_name'] == data
-        end
-      when 'age>='
-        @@users.each  do |user|
-          next if user['age'].nil?
-
-          responses << user if user['age'] >= data
-        end
-      when 'age<='
-        @@users.each  do |user|
-          next if user['age'].nil?
-
-          responses << user if user['age'] <= data
-        end
-      when 'address'
-        @@users.each do |user|
-          next if user['address'].nil?
-
-          responses << user if user['address'] == data
-        end
+    @@users.each do |product|
+      if type.include?('age')
+        next if product['age'].nil?
+        responses << product if product['age'] <= data && type.include?('<=')
+        responses << product if product['age'] >= data && type.include?('>=')
       else
-        'op not found'
+        next if product[type].nil?
+        responses << product if product[type] == data
       end
+    end
     if responses.nil?.eql?(false) && responses.eql?([]) == false
       responses
     else
       'not found'
     end
+
   end
 
   def update(id,object)
