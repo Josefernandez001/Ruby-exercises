@@ -167,7 +167,7 @@ RSpec.describe Product do
       describe 'when the value of type is incorrect' do
         let(:type){'opfound'}
         let(:value){99}
-        it{is_expected.to eq('op not found')}
+        it{is_expected.to eq('not found')}
       end
     end
   end
