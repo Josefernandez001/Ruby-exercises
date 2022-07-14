@@ -73,7 +73,6 @@ class User
     else
       'not found'
     end
-
   end
 
   def update(id, object)
