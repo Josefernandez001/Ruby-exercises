@@ -55,10 +55,12 @@ class Product
     @@products.each do |product|
       if type.include?('value')
         next if product['value'].nil?
+
         responses << product if product['value'] <= data && type.include?('<=')
         responses << product if product['value'] >= data && type.include?('>=')
       else
         next if product[type].nil?
+
         responses << product if product[type] == data
       end
     end
