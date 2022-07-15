@@ -5,11 +5,11 @@ RSpec.describe Product do
   describe '#create' do
     context 'when assessing positive cases' do
       describe 'creation of a product' do
-        let(:product){{'id' => 0,'name' => 'air_spring', 'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
+        let(:product){{'name' => 'air_spring', 'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
         it { is_expected().to eq({'id' => 0,'name' => 'air_spring', 'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2})}
       end
       describe 'creation of another product' do
-        let(:product){{'id' => 1,'name' => 'after_party', 'value' => 10_000, 'brand' => 'mumo', 'description' => 'helps to avoid hangover', 'quantity' => 100}}
+        let(:product){{'name' => 'after_party', 'value' => 10_000, 'brand' => 'mumo', 'description' => 'helps to avoid hangover', 'quantity' => 100}}
         it { is_expected().to eq({'id' => 1,'name' => 'after_party', 'value' => 10_000, 'brand' => 'mumo', 'description' => 'helps to avoid hangover', 'quantity' => 100})}
       end
     end
@@ -17,17 +17,17 @@ RSpec.describe Product do
     context 'when assessing negative cases' do
       context 'when some required data is not passed' do
         describe 'when the name is not passed' do
-          let(:product){{'id' => 0, 'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
+          let(:product){{'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
           it {is_expected().to eq('name is required')}
         end
 
         describe 'when the value is not passed' do
-          let(:product){{'id' => 0,'name' => 'air_spring', 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
+          let(:product){{'name' => 'air_spring', 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
           it {is_expected().to eq('value is required')}
         end
 
         describe 'when the brand is not passed' do
-          let(:product){{'id' => 0,'name' => 'air_spring', 'value' => 5_000, 'description' => 'sunglasses', 'quantity' => 2}}
+          let(:product){{'name' => 'air_spring', 'value' => 5_000, 'description' => 'sunglasses', 'quantity' => 2}}
           it {is_expected().to eq('brand is required')}
         end
       end
