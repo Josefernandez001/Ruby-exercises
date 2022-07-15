@@ -5,36 +5,47 @@ class User
   @@users = []
   @@count = 0
   def initialize(user)
+    user['id'] = @@count
     @user = user
+    @flag2 = nil
   end
 
   def counter
     @@count
   end
 
-  def create
-    flag = nil
-    flag2 = nil
+  def validate
     return 'id is required' if @user['id'].nil? || @user['id'].eql?('')
     return 'name is required' if @user['name'].nil? || @user['name'].eql?('')
     return 'last name is required' if @user['last_name'].nil? || @user['last_name'].eql?('')
     return 'email is required' if @user['email'].nil? || @user['email'].eql?('')
+    'all'
+  end
+
+  def ciclo1(user_obj)
+    @flag2 = user_obj['email'].eql? @user['email']
+    return 'the email cannot be repeated' if @flag2.eql? true
+    'correct'
+  end
+  def validate2
+    @@users.each do |user_obj|
+      mensaje = ciclo1(user_obj)
+
+      break if flag2.eql?('the email cannot be repeated')
+    end
+    if mensaje.eql?('correct')
+      @@count += 1
+      @@users << @user
+      'new user create'
+    end
+  end
+
+  def create
+    men = validate
+    return men unless men.include?('all')
 
     if @@users.length >= 1
-      @@users.each do |user_obj|
-        flag = user_obj['id'].eql? @user['id']
-        return 'the id cannot be repeated' if flag.eql? true
-
-        flag2 = user_obj['email'].eql? @user['email']
-        return 'the email cannot be repeated' if flag2.eql? true
-
-        break if flag.eql?(true) || flag2.eql?(true)
-      end
-      if flag.eql?(false) && flag2.eql?(false)
-        @@count += 1
-        @@users << @user
-        'new user create'
-      end
+     validate2
     else
       @@count += 1
       @@users << @user
@@ -76,10 +87,8 @@ class User
   end
 
   def update(id, object)
-    return 'id is required' if object['id'].nil?.eql?(true) || object['id'].eql?('')
-    return 'first name is required' if object['name'].nil?.eql?(true) || object['name'].eql?('')
-    return 'last name is required' if object['last_name'].nil?.eql?(true) || object['last_name'].eql?('')
-    return 'email is required' if object['email'].nil?.eql?(true) || object['email'].eql?('')
+    men =validate
+    return men unless men.include?('all')
 
     user_found = {}
     @@users.each do |user|
