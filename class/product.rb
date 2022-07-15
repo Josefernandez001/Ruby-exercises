@@ -13,29 +13,11 @@ class Product
   end
 
   def create
-    flag = nil
-    return 'id is required' if @product['id'].nil? || @product['id'].eql?('')
-    return 'name is required' if @product['name'].nil? || @product['name'].eql?('')
-    return 'value is required' if @product['value'].nil? || @product['value'].eql?('')
-    return 'brand is required' if @product['brand'].nil? || @product['brand'].eql?('')
+    @product['id'] = @@count
+    message = validating_required_fields
+    return message unless message.include?('all')
 
-    if @@products.length >= 1
-      @@products.each do |product_obj|
-        flag = product_obj['id'].eql? @product['id']
-        return 'the id cannot be repeated' if flag.eql? true
-
-        break if flag.eql?(true)
-      end
-      if flag.eql?(false)
-        @@count += 1
-        @@products << @product
-        @product
-      end
-    else
-      @@count += 1
-      @@products << @product
-      @product
-    end
+    saving_an_object
   end
 
   def all
@@ -50,62 +32,88 @@ class Product
   end
 
   def where(type, data)
-    responses = []
+    @responses = []
 
-    @@products.each do |product|
-      if type.include?('value')
-        next if product['value'].nil?
+    return find_by_value(data, type) if type.include?('value')
 
-        responses << product if product['value'] <= data && type.include?('<=')
-        responses << product if product['value'] >= data && type.include?('>=')
-      else
-        next if product[type].nil?
+    find_by_type(type, data)
+    return @responses if !@responses.nil? && @responses != []
 
-        responses << product if product[type] == data
-      end
-    end
-    if responses.nil?.eql?(false) && responses.eql?([]) == false
-      responses
-    else
-      'not found'
-    end
+    'not found'
   end
 
   def update(id, object)
-    return 'id is required' if object['id'].nil?.eql?(true) || object['id'].eql?('')
-    return 'name is required' if object['name'].nil?.eql?(true) || object['name'].eql?('')
-    return 'value is required' if object['value'].nil?.eql?(true) || object['value'].eql?('')
-    return 'brand is required' if object['brand'].nil?.eql?(true) || object['brand'].eql?('')
+    @product = object
+    message = validating_required_fields
 
-    product_found = {}
-    @@products.each do |product|
-      product_found = product if product['id'] == id
-    end
+    return message unless message.include?('all')
 
-    return 'id not found' if product_found.nil?.eql?(true) || product_found.eql?({})
+    prodcut_found = find(id)
+
+    return prodcut_found if prodcut_found.eql?('id not found')
+
+    @@products.delete(prodcut_found)
+
+    updating_an_object(object, id)
+  end
+
+  def delete(id)
+    product_found = find(id)
+
+    return product_found if product_found.eql?('id not found')
 
     @@products.delete(product_found)
+    product_found
+  end
+end
 
-    @@products.each do |product|
-      if product['id'].eql?(object['id'])
-        @@products << product_found
-        return 'that id is registered'
-      end
-    end
+class Product
+  def validating_required_fields
+    return 'name is required' if @product['name'].nil? || @product['name'].eql?('')
+    return 'value is required' if @product['value'].nil? || @product['value'].eql?('')
+    return 'brand is required' if @product['brand'].nil? || @product['brand'].eql?('')
+
+    'all'
+  end
+
+  def saving_an_object
+    @@count += 1
+    @@products << @product
+    @product
+  end
+
+  def updating_an_object(object, id)
+    object['id'] = id
     @@products << object
     object
   end
 
-  def delete(id)
-    product_found = {}
+  def find_by_value(data, type)
+    filtering_by_value_type?(data, type)
+    return @responses if !@responses.nil? && @responses != []
+
+    'not found'
+  end
+
+  def find_by_type(type, data)
     @@products.each do |product|
-      product_found = product if product['id'] == id
+      next if product[type].nil?
+
+      @responses << product if product[type] == data
     end
+    # puts @responses
+    @responses
+  end
 
-    return 'id not found' if product_found.nil?.eql?(true) || product_found.eql?({})
+  def filtering_by_value_type?(data, type)
+    # @responses = []
+    @@products.each do |product|
+      next if product['value'].nil?
 
-    @@products.delete(product_found)
-    product_found
+      @responses << product if product['value'] <= data && type.include?('<=')
+      @responses << product if product['value'] >= data && type.include?('>=')
+    end
+    @responses
   end
 end
 # {'id' => 0,'name' => '', 'value' => 0, 'brand' => '', 'description' => '', 'quantity' => 0}

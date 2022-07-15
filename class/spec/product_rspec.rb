@@ -16,14 +16,9 @@ RSpec.describe Product do
 
     context 'when assessing negative cases' do
       context 'when some required data is not passed' do
-        describe 'when the id is not passed' do
-        let(:product){{'name' => 'air_spring', 'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
-        it {is_expected().to eq('id is required')}
-        end
-
         describe 'when the name is not passed' do
-        let(:product){{'id' => 0, 'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
-        it {is_expected().to eq('name is required')}
+          let(:product){{'id' => 0, 'value' => 5_000, 'brand' => 'kuky', 'description' => 'sunglasses', 'quantity' => 2}}
+          it {is_expected().to eq('name is required')}
         end
 
         describe 'when the value is not passed' do
@@ -35,11 +30,6 @@ RSpec.describe Product do
           let(:product){{'id' => 0,'name' => 'air_spring', 'value' => 5_000, 'description' => 'sunglasses', 'quantity' => 2}}
           it {is_expected().to eq('brand is required')}
         end
-      end
-
-      describe 'when the id is repeated' do
-        let(:product){{'id' => 1,'name' => 'after_party', 'value' => 10_000, 'brand' => 'mumo', 'description' => 'helps to avoid hangover', 'quantity' => 100}}
-        it { is_expected().to eq('the id cannot be repeated')}
       end
     end
   end
@@ -184,11 +174,6 @@ RSpec.describe Product do
 
     context 'when assessing negative cases' do
       context 'when some required data are not passed on' do
-        describe 'when not passed id' do
-          let(:id){0}
-          let(:object){{'name' => 'air_spring_v2', 'value' => 9_000, 'brand' => 'kuky', 'description' => 'sunglasses_v2', 'quantity' => 3}}
-          it{ is_expected.to eq('id is required')}
-        end
         describe 'when not passed name' do
           let(:id){0}
           let(:object){{'id' => 0, 'value' => 9_000, 'brand' => 'kuky', 'description' => 'sunglasses_v2', 'quantity' => 3}}
