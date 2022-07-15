@@ -5,56 +5,17 @@ class User
   @@users = []
   @@count = 0
   def initialize(user)
-    user['id'] = @@count
     @user = user
-    @flag2 = nil
-  end
-
-  def counter
-    @@count
-  end
-
-  def validate
-    return 'id is required' if @user['id'].nil? || @user['id'].eql?('')
-    return 'name is required' if @user['name'].nil? || @user['name'].eql?('')
-    return 'last name is required' if @user['last_name'].nil? || @user['last_name'].eql?('')
-    return 'email is required' if @user['email'].nil? || @user['email'].eql?('')
-    'all'
-  end
-
-  def ciclo1(user_obj)
-    @flag2 = user_obj['email'].eql? @user['email']
-    return 'the email cannot be repeated' if @flag2.eql? true
-    'correct'
-  end
-  def validate2
-    @@users.each do |user_obj|
-      mensaje = ciclo1(user_obj)
-
-      break if flag2.eql?('the email cannot be repeated')
-    end
-    if mensaje.eql?('correct')
-      @@count += 1
-      @@users << @user
-      'new user create'
-    end
   end
 
   def create
-    men = validate
-    return men unless men.include?('all')
+    @user['id'] = @@count
+    message = validating_required_fields
+    return message unless message.include?('all')
 
-    if @@users.length >= 1
-     validate2
-    else
-      @@count += 1
-      @@users << @user
-      'new user create'
-    end
-  end
+    return email_is_repeated if @@users.length >= 1
 
-  def all
-    @@users
+    saving_an_object
   end
 
   def find(id)
@@ -65,79 +26,169 @@ class User
   end
 
   def where(type, data)
-    responses = []
+    @responses = []
+    return find_by_age(data, type) if type.include?('age')
 
-    @@users.each do |product|
-      if type.include?('age')
-        next if product['age'].nil?
+    find_by_type(type, data)
 
-        responses << product if product['age'] <= data && type.include?('<=')
-        responses << product if product['age'] >= data && type.include?('>=')
-      else
-        next if product[type].nil?
+    return @responses if !@responses.nil? && @responses != []
 
-        responses << product if product[type] == data
-      end
-    end
-    if responses.nil?.eql?(false) && responses.eql?([]) == false
-      responses
-    else
-      'not found'
-    end
+    'not found'
   end
 
   def update(id, object)
-    men =validate
-    return men unless men.include?('all')
+    @user = object
+    message = validating_required_fields
 
-    user_found = {}
-    @@users.each do |user|
-      user_found = user if user['id'] == id
-    end
+    return message unless message.include?('all')
 
-    return 'id not found' if user_found.nil?.eql?(true) || user_found.eql?({})
+    user_found = find(id)
+
+    return user_found if user_found.eql?('id not found')
+
+    # puts "this is use found #{user_found}"
+    @@users.delete(user_found)
+    # puts "all user now #{@@users}"
+    status = email_repeated_update?(user_found, object)
+    # puts value
+    return status if status.eql?('that email is registered')
+
+    updating_an_object(object, id)
+  end
+
+  def delete(id)
+    user_found = find(id)
+
+    return user_found if user_found.eql?('id not found')
 
     @@users.delete(user_found)
+    user_found
+  end
 
+  def counter
+    @@count
+  end
+
+  def all
+    @@users
+  end
+end
+
+# user class , but in this class there are some helper methods
+class User
+  def validating_required_fields
+    return 'name is required' if @user['name'].nil? || @user['name'].eql?('')
+    return 'last name is required' if @user['last_name'].nil? || @user['last_name'].eql?('')
+    return 'email is required' if @user['email'].nil? || @user['email'].eql?('')
+
+    'all'
+  end
+
+  def email_is_repeated
+    message = nil
     @@users.each do |user|
-      if user['id'].eql?(object['id'])
-        @@users << user_found
-        return 'that id is registered'
-      end
+      message = checking_email(user)
+      break if message.eql?('the email cannot be repeated')
+    end
+    return message unless message.eql?('correct')
+
+    saving_an_object
+  end
+
+  def email_repeated_update?(user_found, object)
+    @@users.each do |user|
       if user['email'].eql?(object['email'])
         @@users << user_found
         return 'that email is registered'
       end
     end
+    'correct'
+  end
+
+  def checking_email(user_obj)
+    flag2 = user_obj['email'].eql? @user['email']
+    return 'the email cannot be repeated' if flag2.eql? true
+
+    'correct'
+  end
+
+  def filtering_by_age_type?(data, type)
+    # @responses = []
+    @@users.each do |user|
+      next if user['age'].nil?
+
+      @responses << user if user['age'] <= data && type.include?('<=')
+      @responses << user if user['age'] >= data && type.include?('>=')
+    end
+    @responses
+  end
+
+  def find_by_age(data, type)
+    filtering_by_age_type?(data, type)
+    return @responses if !@responses.nil? && @responses != []
+
+    'not found'
+  end
+
+  def find_by_type(type, data)
+    @@users.each do |user|
+      next if user[type].nil?
+
+      @responses << user if user[type] == data
+    end
+    # puts @responses
+    @responses
+  end
+
+  def updating_an_object(object, id)
+    object['id'] = id
     @@users << object
     object
   end
 
-  def delete(id)
-    user_found = {}
-    @@users.each do |user|
-      user_found = user if user['id'] == id
-    end
-
-    return 'id not found' if user_found.nil?.eql?(true) || user_found.eql?({})
-
-    @@users.delete(user_found)
-    user_found
+  def saving_an_object
+    @@count += 1
+    @@users << @user
+    'new user create'
   end
 end
 
-# user2 = User.new({ 'id' => 2, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'joase@', 'address' => 'aaaaa', 'age' => 18})
-# user2.create
-# user1 = User.new({ 'id' => 1, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'jose@', 'address' => 'aaaaa', 'age' => 16 })
-# user1.create
-# # user3 = User.new({ 'id' => 3, 'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'jose', 'address' => 'aaaaa', 'age' => 15 })
-# # user3.create
+# user1 = User.new(
+#   {
+#     'name' => 'jose', 'last_name' => 'fernandez', 'email' => 'josefernandezllanos@gmail.com',
+#     'age' => 18, 'address' => 'cll15#22760'
+#   }
+# )
+# user2 = User.new(
+#   {
+#     'name' => 'jose2', 'last_name' => 'fernandez', 'email' => 'josefernandezllanos@gmail.com',
+#     'age' => 17, 'address' => 'cll15#22760'
+#   }
+# )
+# user3 = User.new(
+#   {
+#     'name' => 'paco', 'last_name' => 'fernandez', 'email' => 'jlla@gmail.com',
+#     'age' => 12, 'address' => 'cll15#22760'
+#   }
+# )
+# puts user1.create
+# puts user2.create
+# puts user3.create
 
-# # puts user3.where('name','jose').to_s
-# # puts user3.where('last_name','fernandez').to_s
-# # puts user3.where('age>=',18).to_s
-# # puts user3.where('age<=',23).to_s
-# # puts user3.where('address','aaaaa').to_s
+# usuario = {
+#   'name' => 'paco', 'last_name' => 'llanos', 'email' => 'paoc@gmail.com',
+#   'age' => 33, 'address' => 'cll15#22760'
+# }
 
-# puts user2.update(2,{'id' => 2, 'name' => 'ismael', 'last_name' => 'llanos', 'email' => 'jose@', 'address' => 'll23', 'age' => 18})
-# puts user2.all
+# user1.update(0, usuario)
+# puts user1.find(0)
+# puts user1.where('name','paco')
+# puts user1.delete(0)
+# puts user1.delete(1)
+# puts user1.delete(2)
+# p user1.all
+
+# puts user1.where('name','jose2')
+# puts user1.where('name','jose2')
+# puts user1.where('address', 'cll15#22760')
+# puts user1.where('age<=', 12)
