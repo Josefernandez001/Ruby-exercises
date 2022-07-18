@@ -67,6 +67,7 @@ class Product
   end
 end
 
+# product class with some helper methods
 class Product
   def validating_required_fields
     return 'name is required' if @product['name'].nil? || @product['name'].eql?('')
