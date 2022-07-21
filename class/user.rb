@@ -43,7 +43,7 @@ class User
 
     return obj if user_to_update.eql?('new user create')
 
-    @@users << user
+    @@users << user unless user_to_update.eql?('new user create')
     user_to_update
   end
 
