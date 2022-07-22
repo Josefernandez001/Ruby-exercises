@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'module_validate'
-require_relative 'module_search'
+require_relative 'module_validate_product'
+require_relative 'module_search_product'
 
 # class Product
 class Product
